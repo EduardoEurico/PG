@@ -1,0 +1,47 @@
+package main
+
+import (
+    "errors"
+    "fmt"
+)
+
+func calcularDano(personagemNivel, inimigoNivel int) (int, error) {
+    if personagemNivel <= 0 || inimigoNivel <= 0 {
+        return 0, errors.New("nível inválido")
+    }
+
+    var dano int
+
+    if personagemNivel > 100 {
+        dano = personagemNivel * 20
+    } else if personagemNivel > inimigoNivel {
+        dano = personagemNivel * 10
+    } else if personagemNivel < inimigoNivel && inimigoNivel > 100 {
+        dano = personagemNivel * 2
+    } else if personagemNivel < inimigoNivel {
+        dano = personagemNivel * 5
+    } else {
+        dano = personagemNivel * 7
+    }
+
+    diferencaNivel := personagemNivel - inimigoNivel
+
+    if diferencaNivel > 20 {
+        dano *= 5
+    } else if diferencaNivel < -20 {
+        return 0, errors.New("nível inválido")
+    } else {
+        dano *= 2
+    }
+
+    return dano, nil
+}
+
+func main() {
+    dano, err := calcularDano(50, 70)
+    if err != nil {
+        fmt.Println(err)
+    } else {
+        fmt.Println("Dano causado:", dano)
+    }
+}
